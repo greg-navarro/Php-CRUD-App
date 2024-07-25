@@ -1,4 +1,6 @@
-FROM php:8.2-cli
-COPY . /usr/src/myapp
-WORKDIR /usr/src/myapp
-CMD [ "php", "./your-script.php" ]
+FROM php:7.2-apache
+# Transer source code
+COPY src/ /var/www/html/
+# Expose port 80 to access the web server
+EXPOSE 80
+

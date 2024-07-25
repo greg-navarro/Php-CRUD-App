@@ -1,3 +1,6 @@
-To run this project:
+Development step 1: launch simple PHP cli script.
 $ docker build -t my-php-app .
 $ docker run -it --rm --name my-running-app my-php-app
+
+Development step 2: switch to php:apache-bullseye to serve documents as a web server.
+
