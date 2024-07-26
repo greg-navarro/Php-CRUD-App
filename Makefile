@@ -13,7 +13,7 @@ build:
 
 # Target to run container 
 run:
-	docker run -d -p 8080:80 --rm --name $(APP_NAME) $(IMAGE_NAME)
+	docker run -d -p 8080:80 -v "$(PWD)/src:/var/www/html/" --rm --name $(APP_NAME) $(IMAGE_NAME)
 
 # Target to clean up (optional)
 clean:
