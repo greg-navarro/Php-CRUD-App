@@ -4,3 +4,24 @@ $ docker run -it --rm --name my-running-app my-php-app
 
 Development step 2: switch to php:apache-bullseye to serve documents as a web server.
 
+Development step 3: create CRUD app using a json file as a database
+
+Development step 4: switch to a mysql database, add test data to operate on
+    To set up the users table:
+
+    To seed the database:
+        1 Copy test files into the container ex. `docker cp ./core/src/users/users.csv php-crud-app-database:/home/`
+        2 Exec into container ex. `docker exec -it php-crud-app-database bash`
+        3 Log into mysql as root ex. `mysql -uroot -p@ssw0rd`
+        4 Run SQL file to build table: `source \home\build_table.sql;` 
+        5 Set global var allowing for loading files `SET GLOBAL local_infile=1;`
+        6 Exit mysql, use following arg to restart it `mysql --local-infile=1 -u root -p@ssw0rd`
+        7 Load csv file into the existing table `LOAD DATA LOCAL INFILE '/home/users.csv' INTO TABLE users FIELDS TERMINATED BY ',';`
+
+Development step 5: set up a PDO object in index.php that connects to our database.
+    An error occurred, PDO could not find a mysql driver required.
+    To fix this
+        1. install a pdo mysql driver
+            COULD NOT FIND!!! D:
+        1. restart the apache server
+            sudo systemctl restart httpd.service

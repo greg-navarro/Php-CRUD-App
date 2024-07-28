@@ -1,0 +1,27 @@
+services:
+  core:
+    image: php-crud-app/core:latest
+    container_name: php-crud-app-core
+    build:
+      context: ./core
+      dockerfile: ./env/dev/Dockerfile
+    environment:
+      - ServerName=localhost
+    ports:
+      - "8080:80"
+    volumes:
+      - ./core/src:/var/www/html/
+
+  database:
+    image: php-crud-app/database:latest
+    container_name: php-crud-app-database
+    build:
+      context: ./database
+      dockerfile: ./env/dev/Dockerfile
+    ports:
+      - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql
+
+volumes:
+  database:

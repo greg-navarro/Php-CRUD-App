@@ -1,9 +1,43 @@
 <?php
 // Sample data
-$data = json_decode(file_get_contents(__DIR__ . '/users/users.json'), true);
+$users = json_decode(file_get_contents(__DIR__ . '/users/users.json'), true);
 
 
 include 'partials/header.php';
+
+
+// Database connection settings
+$host = '127.0.0.1';
+$port = '3306';
+$dbname = 'app';
+$user = 'mysql';
+$password = 'mysql';
+
+try {
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8";
+    echo "Create a PDO instance $dsn \r\n";
+    echo "\n";
+    $pdo = new PDO($dsn, $user, $password);
+
+    echo "Set the PDO error mode to exception";
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    echo "Prepare and execute the query";
+    $sql = 'SELECT * FROM users';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+    // Fetch all results
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Display the results
+    echo "<pre>";
+    print_r($results);
+    echo "</pre>";
+
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
 ?>
 
 <div> <a href="create.php" class="button-link">Create New User</a> <div>
@@ -21,7 +55,7 @@ include 'partials/header.php';
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($data as $user): ?>
+        <?php foreach ($users as $user): ?>
             <tr>
                 <td><?php echo htmlspecialchars($user['id']); ?></td>
                 <td><?php echo htmlspecialchars($user['name']); ?></td>
